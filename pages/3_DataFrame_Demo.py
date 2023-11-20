@@ -1,28 +1,58 @@
-
-from urllib.error import URLError
-
-import altair as alt
-import pandas as pd
-
+import os
 import streamlit as st
+import pandas as pd
 from streamlit_gsheets import GSheetsConnection
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
+# Set up Google Sheets API credentials and parameters
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+SAMPLE_SPREADSHEET_ID = '1ldETnrsYXn0RdrrhwdH-xW3PO_SdHQBz_v6qMf_CT9U'
+SAMPLE_RANGE_NAME = 'form_responses!A2:U'
 
 # Create a connection object.
 conn = st.connection("gsheets", type=GSheetsConnection)
 
-df = conn.read()
-# Print results.
-for row in df.itertuples():
-    st.write(f"{row.name} has a :{row.pet}:")
+# Fetch data from Google Sheets
+def fetch_google_sheets_data():
+    creds = None
+    if os.path.exists('token.json'):
+        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            creds = flow.run_local_server(port=0)
+        with open('token.json', 'w') as token:
+            token.write(creds.to_json())
 
+    try:
+        service = build('sheets', 'v4', credentials=creds)
+        sheet = service.spreadsheets()
+        result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+                                    range=SAMPLE_RANGE_NAME).execute()
+        values = result.get('values', [])
+        if not values:
+            print('No data found.')
+            return []
+        return values
+    except HttpError as err:
+        print(err)
+        return []
+
+# Read data from Google Sheets
+df = pd.DataFrame(fetch_google_sheets_data())
+
+# Display the DataFrame
+st.dataframe(df)
 
 st.set_page_config(page_title="Patient Record Page Demo", page_icon="📊")
-st.markdown(" Patient Records")
+st.markdown("Patient Records")
 st.sidebar.header("Patient Records")
 st.write(
     """This page shows the list of all Patient Records but can be filtered according to the patient name or warning messages (high measurements reported) """
 )
-
-# Call the Streamlit app function
-if __name__ == '__main__':
-    data_frame_demo()

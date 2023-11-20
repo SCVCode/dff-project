@@ -1,5 +1,15 @@
-altair
 numpy
 pandas
 pydeck
-streamlit
+streamlit == 1.28.2
+gspread
+st-gsheets-connection
+gsheets
+duckdb
+gspread
+gspread-dataframe
+gspread-formatting
+gspread-pandas
+pandas
+sql-metadata
+validators

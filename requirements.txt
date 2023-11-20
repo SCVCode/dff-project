@@ -1,7 +1,7 @@
 numpy
 pandas
 pydeck
-streamlit == 1.28.2
+streamlit == 1.28
 gspread
 st-gsheets-connection
 gsheets

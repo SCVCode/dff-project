@@ -14,7 +14,7 @@ SAMPLE_SPREADSHEET_ID = '1ldETnrsYXn0RdrrhwdH-xW3PO_SdHQBz_v6qMf_CT9U'
 SAMPLE_RANGE_NAME = 'form_responses!A2:U'
 
 # Load credentials from secrets.toml
-with open('secrets.toml', 'r') as f:
+with open('pages/secrets.toml', 'r') as f:
     secrets = toml.load(f)
 
 # Create a connection object.

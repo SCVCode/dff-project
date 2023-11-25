@@ -98,4 +98,4 @@ fig.update_yaxes(autorange="reversed", title_text="Heart Rate (bpm)", secondary_
 st.plotly_chart(fig)
 
 # Create the pie chart
-st.wri
+st.write

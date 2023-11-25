@@ -26,7 +26,7 @@ def fetch_google_sheets_data():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
-            creds = flow.run_local_server(port=1)
+            creds = flow.run_local_server(port=10000)
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
 

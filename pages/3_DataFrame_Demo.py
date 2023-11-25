@@ -3,8 +3,6 @@ import pandas as pd
 import plotly.express as px
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-
-# Import the necessary Google Sheets API code_
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -18,6 +16,7 @@ SAMPLE_SPREADSHEET_ID = '1zdI8XWKCkjGGdfe2L7O5dB-j-G6wTfpX571xiJxD_GM'
 SAMPLE_RANGE_NAME = 'form_responses!A2:G'
 
 # Fetch data from Google Sheets
+@st.cache
 def fetch_google_sheets_data():
     creds = None
     if os.path.exists('token.json'):
@@ -44,6 +43,7 @@ def fetch_google_sheets_data():
     except HttpError as err:
         print(err)
         return []
+
 # Load data from Google Sheets
 data = pd.DataFrame(fetch_google_sheets_data(), columns=[
     'Timestamp', 'Patient ID',
@@ -98,7 +98,4 @@ fig.update_yaxes(autorange="reversed", title_text="Heart Rate (bpm)", secondary_
 st.plotly_chart(fig)
 
 # Create the pie chart
-st.write("### Urine Analysis Results")
-result_counts = patient_data['Urine Analysis'].value_counts()
-fig = px.pie(names=result_counts.index, values=result_counts.values, title='Urine Analysis Results')
-st.plotly_chart(fig)
+st.wri

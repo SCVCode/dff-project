@@ -16,7 +16,7 @@ SAMPLE_SPREADSHEET_ID = '1zdI8XWKCkjGGdfe2L7O5dB-j-G6wTfpX571xiJxD_GM'
 SAMPLE_RANGE_NAME = 'form_responses!A2:G'
 
 # Fetch data from Google Sheets
-@st.cache
+@st.cache_data
 def fetch_google_sheets_data():
     creds = None
     if os.path.exists('token.json'):
@@ -97,5 +97,3 @@ fig.update_yaxes(autorange="reversed", title_text="Heart Rate (bpm)", secondary_
 # Display the chart
 st.plotly_chart(fig)
 
-# Create the pie chart
-st.write

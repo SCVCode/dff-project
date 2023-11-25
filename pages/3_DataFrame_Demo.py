@@ -10,6 +10,9 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import os
 
+from streamlit.hello.utils import show_code
+
+
 # Set up Google Sheets API credentials and parameters
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 SAMPLE_SPREADSHEET_ID = '1zdI8XWKCkjGGdfe2L7O5dB-j-G6wTfpX571xiJxD_GM'
@@ -97,3 +100,6 @@ fig.update_yaxes(autorange="reversed", title_text="Heart Rate (bpm)", secondary_
 # Display the chart
 st.plotly_chart(fig)
 
+fetch_google_sheets_data()
+
+show_code(fetch_google_sheets_data)

@@ -58,49 +58,11 @@ data = pd.DataFrame(fetch_google_sheets_data(), columns=[
 ])
 
 # Streamlit app layout
-st.title("Patient Data Dashboard")
+st.title("Patient Continuous DataStream")
 
 st.dataframe(data, use_container_width=True)
 
-# Dropdown for selecting patient
-selected_patient_id = st.selectbox("Select Patient ID", data['Patient ID'].unique())
 
-# # Display patient information
-# patient_data = data[data['Patient ID'] == selected_patient_id]
-# st.write(f"**Patient ID:** {selected_patient_id}")
-# st.write(f"**Symptoms:** {patient_data['Symptoms'].values[0]}")
-# st.write(f"**Systolic BP:** {patient_data['Systolic BP'].values[0]}")
-# st.write(f"**Diastolic BP:** {patient_data['Diastolic BP'].values[0]}")
-# st.write(f"**Heart Rate:** {patient_data['Heart Rate'].values[0]}")
-# st.write(f"**Urine Analysis:** {patient_data['Urine Analysis'].values[0]}")
-
-# # Display data table
-# st.write("### Patient Data Table")
-# st.write(data[data['Patient ID'] == selected_patient_id])
-
-# # Create a line chart with multiple Y-axes
-# st.write("### Patient Vital Signs Over Time")
-# fig = make_subplots(specs=[[{"secondary_y": True}]])
-# fig.add_trace(go.Scatter(x=patient_data['Timestamp'], y=patient_data['Systolic BP'],
-#                          mode='lines', name='Systolic BP'), secondary_y=False)
-# fig.add_trace(go.Scatter(x=patient_data['Timestamp'], y=patient_data['Diastolic BP'],
-#                          mode='lines', name='Diastolic BP'), secondary_y=False)
-# fig.add_trace(go.Scatter(x=patient_data['Timestamp'], y=patient_data['Heart Rate'],
-#                          mode='lines', name='Heart Rate'), secondary_y=True)
-
-# # Update the layout for better visualization
-# fig.update_layout(title=f'Patient {selected_patient_id} Vital Signs Over Time',
-#                   xaxis_title='Timestamp',
-#                   yaxis_title='Blood Pressure (mmHg)',
-#                   yaxis2_title='Heart Rate (bpm)',
-#                   legend=dict(x=0, y=1))
-
-# # Reverse the Y-axis direction for both Y-axes
-# fig.update_yaxes(autorange="reversed", title_text="Blood Pressure (mmHg)", secondary_y=False)
-# fig.update_yaxes(autorange="reversed", title_text="Heart Rate (bpm)", secondary_y=True)
-
-# # Display the chart
-# st.plotly_chart(fig)
 
 fetch_google_sheets_data()
 

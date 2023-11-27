@@ -1,17 +1,11 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import os
-
-from streamlit.hello.utils import show_code
-
 
 # Set up Google Sheets API credentials and parameters
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -57,22 +51,21 @@ data = pd.DataFrame(fetch_google_sheets_data(), columns=[
     'Urine Analysis'
 ])
 
-st.header("Latest Inputs")
 
-# Display patient information
-# Dropdown for selecting patient
-selected_patient_id = st.selectbox("Select Patient ID", data['Patient ID'].unique())
+st.title("Welcome Back!")
 
-patient_data = data[data['Patient ID'] == selected_patient_id]
-st.write(f"**Patient ID:** {selected_patient_id}")
-st.write(f"**Symptoms:** {patient_data['Symptoms'].values[0]}")
-st.write(f"**Systolic BP:** {patient_data['Systolic BP'].values[0]}")
-st.write(f"**Diastolic BP:** {patient_data['Diastolic BP'].values[0]}")
-st.write(f"**Heart Rate:** {patient_data['Heart Rate'].values[0]}")
-st.write(f"**Urine Analysis:** {patient_data['Urine Analysis'].values[0]}")
+col1, col2, col3 = st.columns(3)
 
-# Display data table
-st.write("### Patient Data Table")
-st.write(data[data['Patient ID'] == selected_patient_id])
+col1.link_button("Go to Active Users", "https://streamlit.io/active_users")
+col2.link_button("Go to Non-Compliant Users", "https://streamlit.io/non_compliant_users")
+col3.link_button("Go to Clinical Alerts", "https://streamlit.io/clinicalalerts")
 
 
+# Streamlit app layout
+st.title("Patient Continuous DataStream")
+
+st.dataframe(data, use_container_width=True)
+
+
+
+fetch_google_sheets_data()

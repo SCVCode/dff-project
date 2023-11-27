@@ -26,7 +26,10 @@ def run():
 
     st.write("# Welcome to your Patient Dashboard! 👋")
 
-    st.sidebar.success("Select a patient view above.")
+    st.sidebar.success("Select a View above.")
+    
+    st.sidebar.link_button("Add new Patient",'https://docs.google.com/forms/d/15u76uURRcv1q0en3A9e1-CFumbb3iLzQr0IMXZXh_1w/edit')
+
 
     st.markdown(
         """

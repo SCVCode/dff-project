@@ -13,7 +13,6 @@ SAMPLE_SPREADSHEET_ID = '1ldETnrsYXn0RdrrhwdH-xW3PO_SdHQBz_v6qMf_CT9U'
 SAMPLE_RANGE_NAME = 'form_responses!A2:J'
 
 # Fetch data from Google Sheets
-@st.cache_data
 def fetch_google_sheets_data():
     creds = None
     if os.path.exists('token.json'):

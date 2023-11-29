@@ -13,3 +13,4 @@ gspread-pandas
 pandas
 sql-metadata
 validators
+plotly

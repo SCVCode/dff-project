@@ -14,28 +14,12 @@
 
 import streamlit as st
 from streamlit.logger import get_logger
-import streamlit_authenticator as stauth
 
 import yaml
 from yaml.loader import SafeLoader
+from login import authenticator
 
 LOGGER = get_logger(__name__)
-
-
-with open('../config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
-
-authenticator = stauth.Authenticate(
-    config['credentials'],
-    config['cookie']['name'],
-    config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['preauthorized']
-)
-
-
-authenticator.login('Login', 'main')
-
 
 def run():
     st.set_page_config(
@@ -54,6 +38,9 @@ def run():
         """
 This is a demo of the patient monitoring dashboard that would be used to remotely monitor patients with or at risk of hypertensive disorders of pregnancy in Zimbabwe    """
     )
+    
+    authenticator.login('Login', 'main')
+
 
 if __name__ == "__main__":
     run()

@@ -1,0 +1,15 @@
+credentials:
+  usernames:
+    vlah:
+      email: shannonvlahakis@gmail.com
+      name: Shannon Vlahakis
+      password: # Placeholder for hashed password of 'abc'
+cookie:
+  expiry_days: 90
+  key: some_signature_key # Must be string
+  name: some_cookie_name
+preauthorized:
+  emails:
+  -shannonvlahakis@gmail.com
+
+

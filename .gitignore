@@ -1,3 +1,5 @@
 secrets.toml
 credentials.json
 token.json
+streamlit_authenticator/__pycache__
+/test

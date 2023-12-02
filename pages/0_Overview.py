@@ -30,20 +30,20 @@ def fetch_google_sheets_data():
     try:
         service = build('sheets', 'v4', credentials=creds)
         sheet = service.spreadsheets()
-        result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                                    range=SAMPLE_RANGE_NAME).execute()
+        result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID, range=SAMPLE_RANGE_NAME).execute()
         values = result.get('values', [])
         if not values:
-            print('No data found.')
-            return []
-        return values
+            st.warning('No data found in the Google Sheet.')
+            return pd.DataFrame()  # Return an empty DataFrame if no data is found
+        return pd.DataFrame(values[1:], columns=values[0])
     except HttpError as err:
-        print(err)
-        return []
+        st.error(f'Error fetching data from Google Sheets: {err}')
+        return pd.DataFrame()
 
 # Load data from Google Sheets
 data = pd.DataFrame(fetch_google_sheets_data(), columns=[
-    'Timestamp', 'Patient ID',
+    'Timestamp', 
+    'Patient ID',
     'Symptoms',
     'Systolic BP',
     'Diastolic BP',
@@ -51,21 +51,41 @@ data = pd.DataFrame(fetch_google_sheets_data(), columns=[
     'Urine Analysis'
 ])
 
-
-st.title("Welcome Back!")
-
-col1, col2, col3 = st.columns(3)
-
-col1.link_button("Go to Active Users", "https://streamlit.io/active_users")
-col2.link_button("Go to Non-Compliant Users", "https://streamlit.io/non_compliant_users")
-col3.link_button("Go to Clinical Alerts", "https://streamlit.io/clinicalalerts")
-
-
 # Streamlit app layout
 st.title("Patient Continuous DataStream")
 
+# Display the original data
+st.header("Original Data:")
 st.dataframe(data, use_container_width=True)
 
+# Buttons for navigation
+col1, col2, col3 = st.columns(3)
 
+# Function to filter data based on conditions
+def filter_data(condition):
+    if condition == 'Active Users':
+        return data[data['Patient ID'].isin(data['Patient ID'].value_counts()[data['Patient ID'].value_counts() >= 3].index)]
+    elif condition == 'Non-Compliant Users':
+        return data[data['Patient ID'].isin(data['Patient ID'].value_counts()[data['Patient ID'].value_counts() <= 2].index)]
+    elif condition == 'Clinical Alerts':
+        return data[data['Systolic BP'].astype(float) > 150]
+    else:
+        return data
 
-fetch_google_sheets_data()
+# Button to filter for Active Users
+if col1.button("Go to Active Users"):
+    filtered_data = filter_data('Active Users')
+    st.header("Active Users (Patient ID appears 3 or more times):")
+    st.dataframe(filtered_data, use_container_width=True)
+
+# Button to filter for Non-Compliant Users
+if col2.button("Go to Non-Compliant Users"):
+    filtered_data = filter_data('Non-Compliant Users')
+    st.header("Non-Compliant Users (Patient ID appears 2 or fewer times):")
+    st.dataframe(filtered_data, use_container_width=True)
+
+# Button to filter for Clinical Alerts
+if col3.button("Go to Clinical Alerts"):
+    filtered_data = filter_data('Clinical Alerts')
+    st.header("Clinical Alerts (Systolic BP > 150):")
+    st.dataframe(filtered_data, use_container_width=True)

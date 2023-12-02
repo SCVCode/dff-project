@@ -6,6 +6,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import os
+from theme import apply_custom_theme
 
 # Set up Google Sheets API credentials and parameters
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -14,6 +15,7 @@ SAMPLE_RANGE_NAME = 'form_responses!A2:J'
 
 # Fetch data from Google Sheets
 def fetch_google_sheets_data():
+    apply_custom_theme()
     creds = None
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)

@@ -8,6 +8,8 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from theme import apply_custom_theme
+
 import os
 
 from streamlit.hello.utils import show_code
@@ -21,6 +23,7 @@ SAMPLE_RANGE_NAME = 'form_responses!A2:G'
 # Fetch data from Google Sheets
 @st.cache_data
 def fetch_google_sheets_data():
+    apply_custom_theme()
     creds = None
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
